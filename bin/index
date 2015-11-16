@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var qrcode = require('qrcode-terminal');
+var program = require('commander');
+var pjson = require('../package.json');
+var handler = require('../handler');
+
+program
+  .version(pjson.version)
+  .option('--install', 'install one or more packages')
+  .option('--uninstall', 'search with optional query')
+  .on('install', handler.install)
+  .on('uninstall', handler.uninstall)
+  .parse(process.argv);
+
+if (!program.args.length) program.help();

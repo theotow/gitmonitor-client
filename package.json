@@ -1,0 +1,53 @@
+{
+  "name": "gitmonitor",
+  "version": "0.0.1",
+  "description": "Notifies you if you forgot to push your code to origin",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.0.5",
+    "commander": "^2.9.0",
+    "crontab": "^1.1.2",
+    "git-utils": "^4.0.7",
+    "qrcode-terminal": "^0.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "ecmaFeatures": {
+      "modules": true,
+      "jsx": true
+    },
+    "globals": {
+      "describe": true,
+      "it": true,
+      "sinon": true
+    },
+    "parser": "babel-eslint",
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "strict": [
+        2,
+        "global"
+      ],
+      "indent": [
+        2,
+        2
+      ],
+      "quotes": [
+        2,
+        "single"
+      ]
+    }
+  },
+  "author": "Manuel Villing <hi@manuelvilling.de>",
+  "license": "MIT"
+}
