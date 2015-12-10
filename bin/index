@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 
-var qrcode = require('qrcode-terminal');
-var program = require('commander');
 var pjson = require('../package.json');
 var handler = require('../handler');
 
-program
-  .version(pjson.version)
-  .option('--install', 'install one or more packages')
-  .option('--uninstall', 'search with optional query')
-  .on('install', handler.install)
-  .on('uninstall', handler.uninstall)
-  .parse(process.argv);
-
-if (!program.args.length) program.help();
+var argv = require('yargs')
+  .usage('Installes ' + handler.CONFIG.NAME + ' in your git-repo.\nUsage: $0 command')
+  .command('install','Install ' + handler.CONFIG.NAME + ' from your git-repo, use with --file', handler.install).options({
+    'f': {
+      alias: 'file',
+      demand: true,
+      default: './',
+      describe: 'Path to git-repo',
+      type: 'string'
+    }
+  })
+  .command('uninstall', 'Uninstall ' + handler.CONFIG.NAME + ' from your git-repo, use with --file', handler.uninstall)
+  .command('update', 'Update git-repo with the server, use with --file', handler.update)
+  .demand(1, 'must provide a valid command')
+  .showHelpOnFail(true, 'Specify --help for available options')
+  .help('help')
+  .argv;
