@@ -14,23 +14,48 @@ var nconf = require('nconf');
 var CONFIG = {
   NAME: 'gitmonitor',
   SERVER: 'http://dockerhost.dev:3000',
-  CONFIGFILE: __dirname + '/.gitmonitor/config.json',
+  CONFIGFILE: '/.gitmonitor/config.json',
 };
+
+module.exports = {
+  update: update,
+  removeConfig: removeConfig, // done
+  readConfig: readConfig, // done
+  writeConfig: writeConfig, // done
+  installCron: installCron, // done
+  unInstallCron: unInstallCron, // done
+  getRepoInfos: getRepoInfos, // done
+  installRaw: installRaw, // done
+  uninstallRaw: uninstallRaw, // done
+  updateRaw: updateRaw, // done
+  isInstalled: isInstalled,
+  getAppBinaryPath: getAppBinaryPath,
+  cronCommand: cronCommand,
+  CONFIG: CONFIG
+};
+
+function cronCommand(binary, repoPath){
+  return  binary + ' update ' + repoPath;
+}
+
+function updateRaw(repoPath){
+  return getRepoInfos(repoPath).bind({}).then(function(repoInfo) {
+    this.repoInfo = repoInfo;
+    return readConfig(repoPath);
+  }).then(function(config) {
+    return apiUpdateRepo({
+      id: config.id,
+      repoData: this.repoInfo
+    });
+  });
+}
 
 function update(args) {
   var repoPath = path.resolve('./');
   if (args.argv._[1]) {
     repoPath = path.resolve(args.argv._[1]);
   }
-  getRepoInfos(repoPath).bind({}).then(function(repoInfo) {
-    this.repoInfo = repoInfo;
-    return readConfig();
-  }).then(function(config) {
-    return apiUpdateRepo({
-      id: config.id,
-      repoData: this.repoInfo
-    });
-  }).then(function() {
+  updateRaw(repoPath).then(function() {
     showSuccess('Updated Repo successfully');
   }).catch(function(err) {
     showError(err);
@@ -78,8 +103,9 @@ function filterResponseId(data) {
   });
 }
 
-function readConfig() {
-  return fs.readFileAsync(CONFIG.CONFIGFILE).then(function(data) {
+function readConfig(repoPath) {
+  var configFilePath = path.join(repoPath, CONFIG.CONFIGFILE);
+  return fs.readFileAsync(configFilePath).then(function(data) {
     return new Promise(function(resolve) {
       resolve(JSON.parse(data.toString()));
     });
@@ -91,17 +117,19 @@ function getDirFromPath(myPath) {
   return dir.slice(0, dir.length - 1).join('/');
 }
 
-function removeConfig() {
-  var dir = getDirFromPath(CONFIG.CONFIGFILE);
-  return fs.unlinkAsync(CONFIG.CONFIGFILE).then(function() {
+function removeConfig(repoPath) {
+  var configFilePath = path.join(repoPath, CONFIG.CONFIGFILE);
+  var dir = getDirFromPath(configFilePath);
+  return fs.unlinkAsync(configFilePath).then(function() {
     return fs.rmdirAsync(dir);
   });
 }
 
-function writeConfig(config) {
-  var dir = getDirFromPath(CONFIG.CONFIGFILE);
+function writeConfig(config, repoPath) {
+  var configFilePath = path.join(repoPath, CONFIG.CONFIGFILE);
+  var dir = getDirFromPath(configFilePath);
   return mkdirp(dir).then(function() {
-    return fs.writeFileAsync(CONFIG.CONFIGFILE, JSON.stringify(config)).then(function() {
+    return fs.writeFileAsync(configFilePath, JSON.stringify(config)).then(function() {
       return new Promise(function(resolve) {
         resolve(config);
       });
@@ -109,12 +137,14 @@ function writeConfig(config) {
   });
 }
 
-function apiAddRepo(data) {
+function apiAddRepo(data, repoPath) {
   return apiCall({
     method: 'post',
     route: '/api/Repos/',
     body: data
-  }).then(filterResponseId).then(writeConfig);
+  }).then(filterResponseId).then(function(data){
+    return writeConfig(data, repoPath);
+  });
 }
 
 function promiseFromChildProcess(args) {
@@ -131,12 +161,12 @@ function promiseFromChildProcess(args) {
 function installCron(repoPath) {
   return Promise.promisify(crontab.load)().then(function(crontabIn) {
     return [
-      promiseFromChildProcess('which ' + CONFIG.NAME),
+      getAppBinaryPath(),
       crontabIn
     ]
   }).spread(function(appName, crontabInner) {
     var deferred = Promise.pending();
-    var command = appName.trim() + ' update ' + repoPath;
+    var command = cronCommand(appName.trim(), repoPath);
     if (crontabInner.jobs({
         command: command
       }).length > 0) {
@@ -152,15 +182,19 @@ function installCron(repoPath) {
   });
 };
 
+function getAppBinaryPath(){
+  return promiseFromChildProcess('which ' + CONFIG.NAME);
+}
+
 function unInstallCron(repoPath) {
   return Promise.promisify(crontab.load)().then(function(crontabIn) {
     return [
-      promiseFromChildProcess('which node'),
+      getAppBinaryPath(),
       crontabIn
     ]
   }).spread(function(nodePath, crontabInner) {
     var deferred = Promise.pending();
-    var command = nodePath.trim() + ' update ' + repoPath;
+    var command = cronCommand(nodePath.trim(), repoPath);
     crontabInner.remove({
       command: command
     });
@@ -210,17 +244,24 @@ function install(args) {
     repoPath = path.resolve(args.argv._[1]);
   }
   var obj = {};
-  isInstalled(CONFIG.CONFIGFILE, 'install').then(function() {
-    return getRepoInfos(repoPath);
-  }).then(function(repoData) {
-    return apiAddRepo(repoData);
-  }).then(function(config) {
-    obj.config = config;
-    return installCron(repoPath);
-  }).then(function() {
+  installRaw(repoPath).then(function() {
     qrcode.generate(obj.config.id);
   }).catch(function(err) {
     showError(err);
+  });
+}
+
+function installRaw(repoPath) {
+  var obj = {};
+  return isInstalled(CONFIG.CONFIGFILE, 'install').then(function() {
+    return getRepoInfos(repoPath);
+  }).then(function(repoData) {
+    return apiAddRepo(repoData, repoPath);
+  }).then(function(config) {
+    obj.config = config;
+    return installCron(repoPath);
+  }).then(function(){
+    return Promise.resolve(obj);
   });
 }
 
@@ -237,19 +278,25 @@ function uninstall(args) {
   if (args.argv._[1]) {
     repoPath = path.resolve(args.argv._[1]);
   }
-  isInstalled(CONFIG.CONFIGFILE, 'uninstall').then(function() {
-      return unInstallCron(repoPath).then(function() {
-        return readConfig().then(function(config) {
-          return apiRemoveRepo(config.id);
-        });
-      })
-    }).then(removeConfig)
+  uninstallRaw(repoPath)
     .then(function() {
       showSuccess('Sucessfully uninstalled');
     })
     .catch(function(err) {
       showError(err);
     });
+}
+function uninstallRaw(repoPath){
+  var configFilePath = path.join(repoPath, CONFIG.CONFIGFILE);
+  return isInstalled(configFilePath, 'uninstall').then(function() {
+      return unInstallCron(repoPath).then(function() {
+        return readConfig(repoPath).then(function(config) {
+          return apiRemoveRepo(config.id);
+        });
+      })
+    }).then(function(){
+      return removeConfig(repoPath);
+    })
 }
 
 function fExists(file) {
@@ -284,13 +331,3 @@ function isInstalled(file, iOrUi) {
     });
   });
 }
-
-module.exports = {
-  install: install,
-  uninstall: uninstall,
-  update: update,
-  writeConfig: writeConfig,
-  removeConfig: removeConfig,
-  readConfig: readConfig,
-  CONFIG: CONFIG
-};

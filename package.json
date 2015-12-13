@@ -21,9 +21,13 @@
     "gitmonitor": "./bin/index"
   },
   "preferGlobal": true,
-  "devDependencies": {},
+  "devDependencies": {
+    "bluebird": "^3.0.6",
+    "fs-extra": "^0.26.2",
+    "nock": "^3.4.0"
+  },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha -c --bail -r ./tests/testrunner.js ./tests/_*"
+    "test": "./node_modules/mocha/bin/mocha -c --watch --bail -r ./tests/testrunner.js ./tests/_*"
   },
   "eslintConfig": {
     "env": {
