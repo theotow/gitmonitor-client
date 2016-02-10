@@ -13,12 +13,12 @@ var nconf = require('nconf');
 
 var CONFIG = {
   NAME: 'gitmonitor',
-  SERVER: 'http://dockerhost.dev:3000',
+  SERVER: process.env.GITMONITOR_SERVER || 'http://dockerhost.dev:3000',
   CONFIGFILE: '/.gitmonitor/config.json',
 };
 
 module.exports = {
-  update: update,
+	// for testing only
   removeConfig: removeConfig, // done
   readConfig: readConfig, // done
   writeConfig: writeConfig, // done
@@ -31,6 +31,11 @@ module.exports = {
   isInstalled: isInstalled,
   getAppBinaryPath: getAppBinaryPath,
   cronCommand: cronCommand,
+
+	// interface
+	install: install,
+	uninstall: uninstall,
+	update: update,
   CONFIG: CONFIG
 };
 
@@ -51,10 +56,7 @@ function updateRaw(repoPath){
 }
 
 function update(args) {
-  var repoPath = path.resolve('./');
-  if (args.argv._[1]) {
-    repoPath = path.resolve(args.argv._[1]);
-  }
+	var repoPath = getPath(args);
   updateRaw(repoPath).then(function() {
     showSuccess('Updated Repo successfully');
   }).catch(function(err) {
@@ -84,8 +86,7 @@ function apiUpdateRepo(data) {
 function apiRemoveRepo(id) {
   return apiCall({
     method: 'delete',
-    route: '/api/Repos/' + id,
-    body: {}
+    route: '/api/Repos/' + id
   });
 }
 
@@ -97,7 +98,7 @@ function filterResponseId(data) {
           id: dataInner.id
         });
       } else {
-        resolve('Failed to get Id from server');
+        reject('Failed to get Id from server');
       }
     });
   });
@@ -179,6 +180,7 @@ function installCron(repoPath) {
       }
       deferred.resolve();
     });
+		return deferred.promise;
   });
 };
 
@@ -204,6 +206,7 @@ function unInstallCron(repoPath) {
       }
       deferred.resolve();
     });
+		return deferred.promise;
   });
 };
 
@@ -225,6 +228,7 @@ function getRepoInfos(repoPath) {
       output.name = path.basename(repoPath);
       output.author = commit.author().toString();
       output.message = commit.message();
+			output.notified = false;
       output.isClean = (_.keys(repositoryU.getStatus()).length === 0);
       output.branches = repositoryU.getReferences().heads;
       output.status = repositoryU.getAheadBehindCount('refs/heads/master');
@@ -239,12 +243,9 @@ function getRepoInfos(repoPath) {
 }
 
 function install(args) {
-  var repoPath = path.resolve('./');
-  if (args.argv._[1]) {
-    repoPath = path.resolve(args.argv._[1]);
-  }
-  var obj = {};
-  installRaw(repoPath).then(function() {
+  var repoPath = getPath(args);
+  installRaw(repoPath).then(function(obj) {
+		console.log('Scan the Qrcode with your '+CONFIG.NAME + '-App')
     qrcode.generate(obj.config.id);
   }).catch(function(err) {
     showError(err);
@@ -262,7 +263,7 @@ function installRaw(repoPath) {
     return installCron(repoPath);
   }).then(function(){
     return Promise.resolve(obj);
-  });
+  })
 }
 
 function showSuccess(msg) {
@@ -274,10 +275,7 @@ function showError(msg) {
 }
 
 function uninstall(args) {
-  var repoPath = path.resolve('./');
-  if (args.argv._[1]) {
-    repoPath = path.resolve(args.argv._[1]);
-  }
+	var repoPath = getPath(args);
   uninstallRaw(repoPath)
     .then(function() {
       showSuccess('Sucessfully uninstalled');
@@ -310,6 +308,14 @@ function fExists(file) {
       resolve(false);
     }
   });
+}
+
+function getPath(args){
+	var repoPath = path.resolve('./');
+  if (args.argv._[1]) {
+    repoPath = path.resolve(args.argv._[1]);
+  }
+	return repoPath;
 }
 
 function isInstalled(file, iOrUi) {

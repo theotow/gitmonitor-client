@@ -191,6 +191,7 @@ describe('Tests', function() {
               name: 'testdir3',
               author: 'Scott Chacon <schacon@gmail.com>',
               message: 'test',
+							notified: false,
               isClean: true,
               branches: ['refs/heads/master'],
               status: {
@@ -257,6 +258,7 @@ describe('Tests', function() {
                   name: 'testdir4',
                   author: 'Scott Chacon <schacon@gmail.com>',
                   message: 'test',
+									notified: false,
                   isClean: false,
                   branches: ['refs/heads/master'],
                   status: {

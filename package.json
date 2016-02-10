@@ -27,7 +27,8 @@
     "nock": "^3.4.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha -c --watch --bail -r ./tests/testrunner.js ./tests/_*"
+    "test": "./node_modules/mocha/bin/mocha -c --bail -r ./tests/testrunner.js ./tests/_*",
+		"test-watch": "./node_modules/mocha/bin/mocha -c --watch --bail -r ./tests/testrunner.js ./tests/_*"
   },
   "eslintConfig": {
     "env": {
@@ -36,8 +37,7 @@
       "es6": true
     },
     "ecmaFeatures": {
-      "modules": true,
-      "jsx": true
+      "modules": true
     },
     "globals": {
       "describe": true,
@@ -45,9 +45,6 @@
       "sinon": true
     },
     "parser": "babel-eslint",
-    "plugins": [
-      "react"
-    ],
     "rules": {
       "strict": [
         2,
