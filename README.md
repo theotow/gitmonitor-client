@@ -33,6 +33,8 @@ Tested on Mac OSX 10.10.5 & node 4.2.2
 * [ ] write more tests
 * [ ] make update interval flexible / currently 1x minute
 * [ ] clean up tests properly on error
+* [ ] handle rename of folder
+* [ ] display version number in help 
 
 ## licence
 
