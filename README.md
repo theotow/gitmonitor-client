@@ -20,6 +20,7 @@ PS: currently it just reports if your repo is not committed, if it is pushed is 
 2. cd < your git repo you want to monitor >
 3. gitmonitor install
 4. scan qrcode with your gitmonitor app
+5. add .gitmonitor to your .gitignore file 
 
 ## depends on
 

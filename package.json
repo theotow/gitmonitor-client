@@ -62,5 +62,21 @@
     }
   },
   "author": "Manuel Villing <hi@manuelvilling.de>",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theotow/gitmonitor-client.git"
+  },
+  "keywords": [
+    "gitmonitor",
+    "git",
+    "helper"
+  ],
+  "bugs": {
+    "url": "https://github.com/theotow/gitmonitor-client/issues"
+  },
+  "homepage": "https://github.com/theotow/gitmonitor-client#readme"
 }
