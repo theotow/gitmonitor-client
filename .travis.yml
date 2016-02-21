@@ -6,11 +6,11 @@ addons:
       - build-essential
       - libssl-dev
       - lcov   
-      - gcc-4.9
-      - g++-4.9
+      - gcc-4.8
+      - g++-4.8
 before_install:
-  - export CC="gcc-4.9"
-  - export CXX="g++-4.9"
+  - export CC="gcc-4.8"
+  - export CXX="g++-4.8"
 language: node_js
 node_js:
   - '4.2'
