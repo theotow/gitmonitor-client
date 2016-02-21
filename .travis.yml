@@ -2,6 +2,17 @@ language: node_js
 
 node_js:
   - "4.2.2"
+  
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - build-essential
+      - libssl-dev
+      - gcc-4.9
+      - g++-4.9
+      - lcov
 
 git:
   depth: 10
