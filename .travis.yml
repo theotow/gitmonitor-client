@@ -1,8 +1,16 @@
 language: node_js
 
 node_js:
-  - "0.10"
-  - "4.0"
+  - "4.2"
+  
+nv:
+  - CC=clang CXX=g++-4.8 npm_config_clang=1
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8  
 
 git:
   depth: 10
@@ -13,5 +21,3 @@ branches:
 
 sudo: false
 
-env:
-  - CC=clang CXX=clang++ npm_config_clang=1
