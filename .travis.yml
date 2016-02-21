@@ -1,28 +1,20 @@
-language: node_js
-
-node_js:
-  - "4.2.2"
-  
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - build-essential
-      - libssl-dev
       - gcc-4.9
       - g++-4.9
-      - libc6
-      - lcov
-
-git:
-  depth: 10
-
-branches:
-  only:
-    - master
-
+before_install:
+  - export CC="gcc-4.9"
+  - export CXX="g++-4.9"
+  - git config --global user.name travis
+  - git config --global user.email travis@locahost
+language: node_js
+node_js:
+  - '4.2'
+os:
+  - linux
 sudo: false
 
-env:
-  - CC=clang CXX=clang++ npm_config_clang=1
+  
