@@ -1,11 +1,11 @@
 # gitmonitor-client
 
 [![Build Status](https://travis-ci.org/theotow/gitmonitor-client.svg?branch=master)](https://travis-ci.org/theotow/gitmonitor-client)
+Problems with travis-ci because of nodegit awww
+
 ## purpose
 
 The purpose of this app is to remind you to push your code before you shut your macbook and go home, it may be that other people depend on it or your harddrive dies on the way home...
-
-PS: currently it just reports if your repo is not committed, if it is pushed is not checked
 
 ## how to install
 
@@ -43,6 +43,7 @@ Tested on Mac OSX 10.10.5 & node 4.2.2
 * [ ] clean up tests properly on error
 * [ ] handle rename of folder
 * [ ] display version number in help
+* [ ] fix travis problem
 
 ## licence
 
