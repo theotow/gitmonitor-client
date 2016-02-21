@@ -1,3 +1,27 @@
+branches:
+  only:
+    - master
+
+compiler: clang
+
+os:
+  - linux
+  - osx
+
+sudo: false
+
+env:
+  matrix:
+    - export NODE_VERSION="0.12"
+    - export NODE_VERSION="4.1"
+    - export NODE_VERSION="5.0"
+
+matrix:
+  fast_finish: true
+
+git:
+  depth: 1
+
 addons:
   apt:
     sources:
@@ -5,17 +29,32 @@ addons:
     packages:
       - build-essential
       - libssl-dev
-      - lcov   
       - gcc-4.9
       - g++-4.9
-before_install:
-  - export CC="gcc-4.9"
-  - export CXX="g++-4.9"
-language: node_js
-node_js:
-  - '4.2'
-os:
-  - linux
-sudo: false
+      - lcov
 
-  
+before_install:
+  - export CC=clang
+  - export CXX=clang++
+  - export npm_config_clang=1
+
+  - if [ $TRAVIS_OS_NAME != "linux" ]; then
+      git clone https://github.com/creationix/nvm.git ./.nvm;
+      source ./.nvm/nvm.sh;
+    fi
+
+  - nvm install $NODE_VERSION
+
+  - if [ -z "$TRAVIS_TAG" ] && [ $TRAVIS_OS_NAME == "linux" ] && [ $NODE_VERSION == "0.12" ]; then
+      export GYP_DEFINES="coverage=1 use_obsolete_asm=true";
+      export JOBS=4;
+      export CC=/usr/bin/gcc-4.9;
+      export CXX=/usr/bin/g++-4.9;
+      export npm_config_clang=0;
+      wget http://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz;
+      tar xvfz lcov-1.10.tar.gz;
+    else
+      export GYP_DEFINES="use_obsolete_asm=true";
+      export JOBS=4;
+    fi
+
