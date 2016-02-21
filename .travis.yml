@@ -1,17 +1,21 @@
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - build-essential
+      - libssl-dev
+      - lcov   
+      - gcc-4.9
+      - g++-4.9
+before_install:
+  - export CC="gcc-4.9"
+  - export CXX="g++-4.9"
 language: node_js
-
 node_js:
-  - "0.10"
-  - "4.0"
-
-git:
-  depth: 10
-
-branches:
-  only:
-    - master
-
+  - '4.2'
+os:
+  - linux
 sudo: false
 
-env:
-  - CC=clang CXX=clang++ npm_config_clang=1
+  
