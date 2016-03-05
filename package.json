@@ -1,6 +1,6 @@
 {
   "name": "gitmonitor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Notifies you if you forgot to push your code to origin",
   "main": "index.js",
   "dependencies": {
@@ -25,8 +25,8 @@
     "fs-extra": "^0.26.2",
     "nock": "^3.4.0"
   },
-  "publishConfig":{
-    "registry":"https://registry.npmjs.org/"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
