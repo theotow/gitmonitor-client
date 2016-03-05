@@ -1,6 +1,6 @@
 {
   "name": "gitmonitor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Notifies you if you forgot to push your code to origin",
   "main": "index.js",
   "dependencies": {
