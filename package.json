@@ -25,6 +25,9 @@
     "fs-extra": "^0.26.2",
     "nock": "^3.4.0"
   },
+  "publishConfig":{
+    "registry":"https://registry.npmjs.org/"
+  },
   "scripts": {
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
     "test": "./node_modules/mocha/bin/mocha -c --bail -r ./tests/testrunner.js ./tests/_*",
