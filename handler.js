@@ -57,8 +57,13 @@ function updateRaw(repoPath){
 
 function update(args) {
 	var repoPath = getPath(args);
-  updateRaw(repoPath).then(function() {
-    showSuccess('Updated Repo successfully');
+  readConfig(repoPath).then(function(config){
+    if(config.server){
+      CONFIG.SERVER = config.server
+    }
+    return updateRaw(repoPath).then(function() {
+      showSuccess('Updated Repo successfully');
+    })
   }).catch(function(err) {
     showError(err);
   });
@@ -144,6 +149,7 @@ function apiAddRepo(data, repoPath) {
     route: '/api/Repos/',
     body: data
   }).then(filterResponseId).then(function(data){
+    data.server = CONFIG.SERVER;
     return writeConfig(data, repoPath);
   });
 }
