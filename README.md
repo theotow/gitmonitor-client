@@ -9,6 +9,9 @@ Problems with travis-ci because of nodegit awww
 
 The purpose of this app is to remind you to push your code before you shut your macbook and go home, it may be that other people depend on it or your harddrive dies on the way home...
 
+![flow](https://github.com/theotow/gitmonitor-client/raw/master/github/flow.png "flow")
+
+
 ## how to install
 
 ```
