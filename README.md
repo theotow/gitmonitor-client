@@ -12,7 +12,7 @@ The purpose of this app is to remind you to push your code before you shut your 
 ## how to install
 
 ```
-	npm install -g gitmonitor
+npm install -g gitmonitor
 ```
 
 ## how to use
