@@ -1,3 +1,5 @@
+![logo](https://github.com/theotow/gitmonitor-client/raw/master/github/120x120.png "logo")
+
 # gitmonitor-client
 
 [![Build Status](https://travis-ci.org/theotow/gitmonitor-client.svg?branch=master)](https://travis-ci.org/theotow/gitmonitor-client)
@@ -36,7 +38,7 @@ The purpose of this app is to remind you to push your code before you shut your 
 
 Tested on Mac OSX 10.10.5 & node 4.2.2
 
-## open todos 
+## open todos
 
 * [ ] write more tests
 * [ ] make update interval flexible / currently 1x minute
@@ -45,7 +47,7 @@ Tested on Mac OSX 10.10.5 & node 4.2.2
 * [ ] display version number in help
 * [ ] fix travis problem
 
-## how to contribute 
+## how to contribute
 
 feel free to send me PRs for the open todos, or come up with other suggestions and improvements
 
