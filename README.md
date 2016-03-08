@@ -36,7 +36,7 @@ The purpose of this app is to remind you to push your code before you shut your 
 
 Tested on Mac OSX 10.10.5 & node 4.2.2
 
-## open todos / further improvements
+## open todos 
 
 * [ ] write more tests
 * [ ] make update interval flexible / currently 1x minute
@@ -44,6 +44,10 @@ Tested on Mac OSX 10.10.5 & node 4.2.2
 * [ ] handle rename of folder
 * [ ] display version number in help
 * [ ] fix travis problem
+
+## how to contribute 
+
+feel free to send me PRs for the open todos, or come up with other suggestions and improvements
 
 ## licence
 
