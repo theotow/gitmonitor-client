@@ -35,6 +35,7 @@ module.exports = {
 	// interface
 	install: install,
 	uninstall: uninstall,
+  settings: settings,
 	update: update,
   CONFIG: CONFIG
 };
@@ -52,6 +53,20 @@ function updateRaw(repoPath){
       id: config.id,
       repoData: this.repoInfo
     });
+  });
+}
+
+function settings(args) {
+	var repoPath = getPath(args);
+  var configFilePath = path.join(repoPath, CONFIG.CONFIGFILE);
+  return isInstalled(configFilePath, 'uninstall').then(function() {
+   return readConfig(repoPath);
+  }).then(function(config){
+    console.log('Scan the Qrcode with your '+CONFIG.NAME + '-App')
+    qrcode.generate(config.id);
+    console.log('You use as Server: ', config.server);
+  }).catch(function(err) {
+    showError(err);
   });
 }
 
@@ -260,7 +275,8 @@ function install(args) {
 
 function installRaw(repoPath) {
   var obj = {};
-  return isInstalled(CONFIG.CONFIGFILE, 'install').then(function() {
+  var configFilePath = path.join(repoPath, CONFIG.CONFIGFILE);
+  return isInstalled(configFilePath, 'install').then(function() {
     return getRepoInfos(repoPath);
   }).then(function(repoData) {
     return apiAddRepo(repoData, repoPath);

@@ -41,13 +41,16 @@ npm install -g gitmonitor
 
 Tested on Mac OSX 10.10.5 & node 4.2.2
 
+## changelog
+
+[see here](https://github.com/theotow/gitmonitor-client/blob/master/CHANGELOG.md)
+
 ## open todos
 
 * [ ] write more tests
 * [ ] make update interval flexible / currently 1x minute
 * [ ] clean up tests properly on error
 * [ ] handle rename of folder
-* [ ] display version number in help
 * [ ] fix travis problem
 
 ## how to contribute

@@ -5,7 +5,7 @@ var handler = require('../handler');
 
 var argv = require('yargs')
   .usage('Installes ' + handler.CONFIG.NAME + ' in your git-repo.\nUsage: $0 command')
-  .command('install','Install ' + handler.CONFIG.NAME + ' from your git-repo, use with --file', handler.install).options({
+  .command('install','Install ' + handler.CONFIG.NAME + ' from your git-repo', handler.install).options({
     'f': {
       alias: 'file',
       demand: true,
@@ -14,9 +14,13 @@ var argv = require('yargs')
       type: 'string'
     }
   })
-  .command('uninstall', 'Uninstall ' + handler.CONFIG.NAME + ' from your git-repo, use with --file', handler.uninstall)
-  .command('update', 'Update git-repo with the server, use with --file', handler.update)
+  .command('uninstall', 'Uninstall ' + handler.CONFIG.NAME + ' from your git-repo', handler.uninstall)
+  .command('settings', 'Show settings', handler.settings)
+  .command('update', 'Update git-repo with the server', handler.update)
   .demand(1, 'must provide a valid command')
   .showHelpOnFail(true, 'Specify --help for available options')
   .help('help')
+  .version(function() {
+    return pjson.version;
+  })
   .argv;
