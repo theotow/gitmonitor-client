@@ -27,6 +27,7 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+
   },
   "scripts": {
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
