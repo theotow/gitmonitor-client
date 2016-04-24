@@ -1,0 +1,8 @@
+build:
+    box:
+      id: theotow/gitmonitor-client
+      username: $USERNAME
+      password: $PASSWORD
+      tag: latest
+    steps:
+      - npm-test
