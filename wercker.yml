@@ -1,4 +1,4 @@
 build:
-    box:theotow/gitmonitor-client2:latest
+    box: theotow/gitmonitor-client2
     steps:
       - npm-test
