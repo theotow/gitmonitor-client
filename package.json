@@ -27,11 +27,12 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+
   },
   "scripts": {
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "test": "./node_modules/mocha/bin/mocha -c --bail -r ./tests/testrunner.js ./tests/_*",
-    "test-watch": "./node_modules/mocha/bin/mocha -c --watch --bail -r ./tests/testrunner.js ./tests/_*"
+    "test": "./node_modules/.bin/mocha -c --bail -r ./tests/testrunner.js ./tests/_*",
+    "test-watch": "./node_modules/.bin/mocha -c --watch --bail -r ./tests/testrunner.js ./tests/_*"
   },
   "eslintConfig": {
     "env": {

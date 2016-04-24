@@ -2,8 +2,7 @@
 
 # gitmonitor-client
 
-[![Build Status](https://travis-ci.org/theotow/gitmonitor-client.svg?branch=master)](https://travis-ci.org/theotow/gitmonitor-client)
-Problems with travis-ci because of nodegit awww
+[![wercker status](https://app.wercker.com/status/589b3708b50668263151b6b163d981bc/s/master "wercker status")](https://app.wercker.com/project/bykey/589b3708b50668263151b6b163d981bc)
 
 ## purpose
 
