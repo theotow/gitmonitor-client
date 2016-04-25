@@ -1,9 +1,7 @@
 build:
     box: theotow/gitmonitor-client2
     steps:
-      - script:
-        name: tests
-        code: |
-          git checkout -- .
-          npm i -g
-          npm test
+      - npm-install
+      - npm-install:
+        options: '-g'
+      - npm-test
