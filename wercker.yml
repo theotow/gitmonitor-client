@@ -1,6 +1,12 @@
 build:
     box: theotow/gitmonitor-client2
     steps:
+      - script:
+        name: echo nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
+          ls -al node_modules
       - npm-install:
         options: '-g'
       - npm-test
