@@ -6,7 +6,8 @@ build:
         code: |
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
-          ls -al node_modules
+          docker ps
+	  ls -al
       - npm-install:
         options: '-g'
       - npm-test
