@@ -1,10 +1,9 @@
 build:
     box: theotow/gitmonitor-client2
     steps:
-      - script:
-        name: echo nodejs information
-        code: |
-          git checkout -- .
-      - npm-install:
-        options: '-g'
-      - npm-test
+      - internal/shell:
+        cmd: git checkout -- .
+      - internal/shell:
+        cmd: npm i -g
+      - internal/shell:
+        cmd: npm test
