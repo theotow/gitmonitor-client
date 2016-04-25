@@ -1,6 +1,6 @@
 build:
     box: theotow/gitmonitor-client2
     steps:
-      - npm-install
+      - npm-install:
         options: '-g'
       - npm-test
