@@ -4,4 +4,4 @@ build:
       - npm-install:
         options: '-g'
       - internal/shell:
-	cmd: npm test
+        cmd: npm test
