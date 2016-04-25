@@ -32,6 +32,7 @@
   "scripts": {
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
     "test": "./node_modules/.bin/mocha -c --bail -r ./tests/testrunner.js ./tests/_*",
+    "test-docker": "docker run -it theotow/gitmonitor-client2:latest npm test",
     "test-watch": "./node_modules/.bin/mocha -c --watch --bail -r ./tests/testrunner.js ./tests/_*"
   },
   "eslintConfig": {
